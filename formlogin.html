@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./css/modal.css">
+</head>
+
+<body>
+    <div class="login">
+        <form id="form-login" method="post" action="javascript:enviarDatosLogin()">
+            <h2>Iniciar Sesion:</h2>
+            <input type="email" name="correo" id="correo" placeholder="Correo Electronico" required>
+            <input type="password" name="password" id="password" placeholder="Contraseña" required>
+            <button type="submit" id="btn-login">Iniciar Sesion</button>
+        </form>
+    </div>
+
+    <div id="mensaje-error" style="color: red;">
+    </div>
+
+    <a id="openModalBtn" href="javascript:datosRegistrar()">Registrarse</a>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="titulo-modal">Título del Modal</h2>
+            <div id="contenido-modal">
+                
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./js/fetch.js"></script>
+    <script src="./js/modal.js"></script>
+
+</body>
+
+</html>

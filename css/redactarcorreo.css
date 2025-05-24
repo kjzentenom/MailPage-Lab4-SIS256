@@ -1,0 +1,12 @@
+form#form-correo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+.botones{
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}

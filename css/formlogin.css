@@ -1,0 +1,17 @@
+body{
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+.login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
+}
+.register{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
+}

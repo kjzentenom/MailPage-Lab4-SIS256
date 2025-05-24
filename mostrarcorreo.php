@@ -1,6 +1,7 @@
 <?php
 session_start();
-require("verificarsesion.php");
+include("verificarsesion.php");
+include("verificarestado.php");
 include("conexion.php");
 
 $id_correo = $_GET['id'];

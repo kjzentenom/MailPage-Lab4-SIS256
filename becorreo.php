@@ -1,6 +1,7 @@
 <?php
 session_start();
-require("verificarsesion.php");
+include("verificarsesion.php");
+include("verificarestado.php");
 include("conexion.php");
 
 $miscorreos = $_SESSION['id'];
@@ -21,7 +22,7 @@ JOIN
 JOIN
     usuarios AS u_remit ON c.id_remitente = u_remit.id
 WHERE
-    c.id_destinatario = $miscorreos AND (c.estado = 'enviado' OR c.estado = 'leido') AND c.tipo = 1;";
+    c.id_destinatario = $miscorreos AND (c.estado = 'enviado' OR c.estado = 'abierto') AND c.tipo = 1;";
 
 $resultado=$con->query($sql);
 

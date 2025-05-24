@@ -2,7 +2,8 @@
 <link rel="stylesheet" href="css/redactarcorreo.css">
 <?php
 session_start();
-include('verificarsesion.php');
+include("verificarsesion.php");
+include("verificarestado.php");
 include('conexion.php');
 
 $sql = "SELECT id,correo,nombre FROM usuarios order by nombre";

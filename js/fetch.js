@@ -7,7 +7,7 @@ function enviarDatosLogin() {
   .then(data => {
     if (data === 'true') {
       redireccionarDashboard();
-    } else {
+    } else if (data === 'false') {
       redireccionarLogin();
     }
   })
@@ -103,7 +103,14 @@ function renderizarCorreo(objeto, url) {
     		</thead>`;
 
   for (var i = 0; i < correos.length; i++) {
-    html += `<tr id="entregado">
+    html += `<tr`;
+    if (correos[i].estado == "abierto") {
+      html += ` id="abierto">`;
+    }
+    else if (correos[i].estado == "enviado") {
+      html += ` id="enviado">`;
+    }
+    html += `
         <td>${correos[i].o}</td>
         <td>${correos[i].correo}</td>
         <td>${correos[i].asunto} </td>
@@ -120,6 +127,8 @@ function renderizarCorreo(objeto, url) {
 
 function verCorreoModal(id,urlrefresh) {
   var url = `mostrarcorreo.php?id=${id}`;
+  actualozarEstadoCorreo(id);
+  var openCorreo = document.getElementById('abierto');
   fetch(url)
     .then((response) => response.text())
     .then((data) => {
@@ -128,6 +137,15 @@ function verCorreoModal(id,urlrefresh) {
 		  document.getElementById("myModal").style.display = "block"
       listarCorreos(urlrefresh);
 		  });
+}
+
+function actualozarEstadoCorreo(id) {
+  var url = `actualizarestadoabierto.php?id=${id}`;
+  fetch(url)
+    .then((response) => response.text())
+    .then((data) => {
+      console.log(data);
+    });
 }
 
 function eliminarCorreo(id,urlrefresh) {
@@ -180,6 +198,159 @@ function enviarBorrador(accion, id) {
       document.querySelector("#titulo-modal").innerHTML = "Mensaje"
       document.querySelector("#contenido-modal").innerHTML = data
       listarCorreos(urlrefresh);
+      }
+    );
+}
+
+//CRUD USUARIOS
+function listarUsuarios() {
+  var contenedor;
+  contenedor = document.getElementById("contenido");
+  fetch('a_vercuenta.php')
+    .then((response) => response.text())
+    .then((data) => {
+      usuarios = JSON.parse(data);
+      contenedor.innerHTML = renderizarUsuarios(usuarios);
+    });
+}
+
+function renderizarUsuarios(objeto) {
+  let usuarios = objeto;
+
+  let html = `<table style="border-collapse: collapse" border="1" >
+			  <thead>
+        	<tr>
+            <th>Nombre</th>
+            <th>Usuario</th>
+            <th>Correo</th>
+            <th>Operaciones</th>
+        	</tr>
+    		</thead>`;
+
+  for (var i = 0; i < usuarios.length; i++) {
+    html += `
+      <tr>
+        <td>${usuarios[i].nombre}</td>
+        <td>${usuarios[i].user}</td>
+        <td>${usuarios[i].correo}</td>
+        <td><a id="openModalBtn" href="javascript:editarUsuario('${usuarios[i].id}')">Editar</a>  <a href="javascript:eliminarCuenta('${usuarios[i].id}')">Eliminar</a></td>
+      </tr>`;
+  }
+  html += "</table>";
+  html += `<a id="openModalBtn" href="javascript:datosRegistrar()">Registrar Usuario</a>`;
+  return html;
+}
+
+function editarUsuario(id) {
+  var url = `a_editarcuenta.php?id=${id}`;
+  var urladministrarusuario = 'a_vercuentas.php';
+  fetch(url)
+    .then((response) => response.text())
+    .then((data) => {
+      document.querySelector("#titulo-modal").innerHTML = "Editar Cuenta"
+      document.querySelector("#contenido-modal").innerHTML = data
+      document.getElementById("myModal").style.display = "block"
+      listarUsuarios(urladministrarusuario);
+      });
+}
+
+function guardarEditarCuenta(id) {
+  var datos = new FormData(document.querySelector("#form-editar-cuenta"));
+  var url = `a_guardarcuenta.php?id=${id}`;
+  var urlrefresh = 'a_vercuentas.php';
+
+  fetch(url, { method: "POST", body: datos })
+    .then((response) => response.text())
+    .then((data) => {
+      document.querySelector("#titulo-modal").innerHTML = "Mensaje"
+      document.querySelector("#contenido-modal").innerHTML = data
+      listarUsuarios(urlrefresh);
+      }
+    );
+}
+
+function eliminarCuenta(id) {
+  var url = `a_eliminarcuenta.php?id=${id}`;
+  fetch(url)
+    .then((response) => response.text())
+    .then((data) => {
+      document.querySelector("#titulo-modal").innerHTML = "Mensaje"
+      document.querySelector("#contenido-modal").innerHTML = data
+      listarUsuarios();
+      }
+    );
+}
+
+function auditarCorreos() {
+  var contenedor;
+  contenedor = document.getElementById("contenido");
+  fetch('a_auditarcorreos.php')
+    .then((response) => response.text())
+    .then((data) => {
+      auditoria = JSON.parse(data);
+      contenedor.innerHTML = renderizarAuditoria(auditoria);
+    });
+}
+
+function renderizarAuditoria(objeto) {
+  let auditoria = objeto;
+
+  let html = `<table style="border-collapse: collapse" border="1" >
+        <thead>
+        	<tr>
+            <th>Remitente</th>
+            <th>Correo Remitente</th>
+            <th>Fecha</th>
+            <th>Asunto</th>
+            <th>Cuerpo</th>
+            <th>Estado</th>
+            <th>Destinatario</th>
+            <th>Correo Destinatario</th>
+        	</tr>
+    		</thead>`;
+  for (var i = 0; i < auditoria.length; i++) {
+    html += `<tr`;
+    if (auditoria[i].tipo == "0") {
+      html += ` id="eliminado">`;
+    }
+    else {
+      html += `>`;
+    }
+    html += `
+        <td>${auditoria[i].nombre_remitente}</td>
+        <td>${auditoria[i].correo_remitente}</td>
+        <td>${auditoria[i].fecha_envio}</td>
+        <td>${auditoria[i].asunto}</td>
+        <td>${auditoria[i].cuerpo}</td>
+        <td>${auditoria[i].estado}</td>
+        <td>${auditoria[i].nombre_destinatario}</td>
+        <td>${auditoria[i].correo_destinatario}</td>
+      </tr>`;
+  }
+  html += "</table>";
+  return html;
+}
+
+function notificacionMasiva() {
+  fetch('a_redactarcorreomasivo.php')
+    .then((response) => response.text())
+    .then((data) => {
+      document.querySelector("#titulo-modal").innerHTML = "Redactar Correo Masivo"
+      document.querySelector("#contenido-modal").innerHTML = data
+      document.getElementById("myModal").style.display = "block";
+      });
+}
+
+function enviarNotificacionMasiva() {
+  var formcorreo = document.getElementById('form-correo-masivo');
+  var datos = new FormData(formcorreo);
+  var url = `a_enviarcorreomasivo.php`;
+
+  fetch(url, { method: "POST", body: datos })
+    .then((response) => response.text())
+    .then((data) => {
+      document.querySelector("#titulo-modal").innerHTML = "Mensaje"
+      document.querySelector("#contenido-modal").innerHTML = data
       }
     );
 }

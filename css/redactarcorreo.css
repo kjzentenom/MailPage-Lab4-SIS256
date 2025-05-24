@@ -5,6 +5,13 @@ form#form-correo{
     gap: 10px;
 }
 
+form#form-correo-masivo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
 .botones{
     display: flex;
     justify-content: space-around;

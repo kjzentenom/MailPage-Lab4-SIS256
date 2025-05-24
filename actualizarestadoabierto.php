@@ -5,15 +5,15 @@ include("verificarestado.php");
 include('conexion.php');
 
 $id_correo = $_GET['id'];
-$sql = "UPDATE correos SET tipo = 0 WHERE id = ?";
+
+$sql = "UPDATE correos SET estado = 'abierto' WHERE id = ?";
 $stmt = $con->prepare($sql);
 $stmt->bind_param("i", $id_correo);
 if ($stmt->execute()) {
-    echo 'Correo eliminado exitosamente';
+    echo 'Estado actualizado a abierto';
 } else {
-    echo 'Error al eliminar el correo';
+    echo 'Error al actualizar el estado';
 }
 $stmt->close();
 $con->close();
 ?>
-

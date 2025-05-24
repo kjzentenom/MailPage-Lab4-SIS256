@@ -9,9 +9,9 @@ session_start();
     <input type="password" name="password" id="password" placeholder="Contraseña" required><br>
     
     <?php if(isset($_SESSION['nivel']) && $_SESSION['nivel'] == 1){ ?>
-        <input type="radio" name="nivel" id="nivel" value="1"> Administrador
+        <input type="radio" name="nivel" id="nivel1" value="1"> Administrador
         <br>
-        <input type="radio" name="nivel" id="nivel" value="0"> Usuario
+        <input type="radio" name="nivel" id="nivel0" value="0"> Usuario
         <br>
     <?php } ?>
 

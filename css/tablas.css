@@ -1,0 +1,14 @@
+tr#eliminado{
+    background-color: #FF0000;
+    color: #FFFFFF;
+}
+
+tr#abierto{
+    background-color: #c9daff;
+    color: #000000;
+}
+
+tr#cabecera{
+    background-color: #0084ff;
+    color: #FFFFFF;
+}

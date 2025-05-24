@@ -1,0 +1,17 @@
+form#form-editar-usuario{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.nivel{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.estado{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
